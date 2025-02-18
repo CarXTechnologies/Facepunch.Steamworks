@@ -53,12 +53,12 @@ namespace Steamworks
 			AddInterface<SteamParties>();
 			AddInterface<SteamRemoteStorage>();
 			AddInterface<SteamScreenshots>();
-			AddInterface<SteamUGC>();
+			//AddInterface<SteamUGC>();
 			AddInterface<SteamUser>();
 			AddInterface<SteamUserStats>();
 			AddInterface<SteamUtils>();
-			AddInterface<SteamVideo>();
-			AddInterface<SteamRemotePlay>();
+			//AddInterface<SteamVideo>();
+			//AddInterface<SteamRemotePlay>();
 
 			initialized = openInterfaces.Count > 0;
 
