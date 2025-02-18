@@ -249,6 +249,8 @@ namespace Steamworks
 		/// </summary>
 		public static void OpenGameInviteOverlay( SteamId lobby ) => Internal.ActivateGameOverlayInviteDialog( lobby );
 
+		public static void ActivateGameOverlayInviteDialogConnectString( string pchConnectString ) => Internal.ActivateGameOverlayInviteDialogConnectString( pchConnectString );
+
 		/// <summary>
 		/// Mark a target user as 'played with'.
 		/// NOTE: The current user must be in game with the other player for the association to work.
