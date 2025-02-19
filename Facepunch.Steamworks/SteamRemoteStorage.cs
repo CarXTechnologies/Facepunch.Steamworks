@@ -59,6 +59,37 @@ namespace Steamworks
 			}
 		}
 
+		public unsafe static ulong FileWriteStreamOpen( string filename )
+		{
+			return Internal.FileWriteStreamOpen( filename ).Value;
+		}
+
+		public unsafe static bool FileWriteStreamWriteChunk( ulong writeHandle, byte[] data )
+		{
+			fixed ( byte* ptr = data )
+			{
+				return Internal.FileWriteStreamWriteChunk(writeHandle, (IntPtr) ptr, data.Length );
+			}
+		}
+
+		public unsafe static bool FileWriteStreamWriteChunk( ulong writeHandle, byte[] data, int offset, int count )
+		{
+			fixed ( byte* ptr = data )
+			{
+				return Internal.FileWriteStreamWriteChunk(writeHandle, (IntPtr) (ptr + offset), count );
+			}
+		}
+
+		public static bool FileWriteStreamCancel( ulong writeHandle )
+		{
+			return Internal.FileWriteStreamCancel( writeHandle );
+		}
+
+		public static bool FileWriteStreamClose( ulong writeHandle )
+		{
+			return Internal.FileWriteStreamClose( writeHandle );
+		}
+
 		/// <summary>
 		/// Checks whether the specified file exists.
 		/// </summary>
