@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Steamworks.Data;
 
@@ -265,23 +266,23 @@ namespace Steamworks
 		public static bool RequestUserInformation( SteamId steamid, bool nameonly = true ) => Internal.RequestUserInformation( steamid, nameonly );
 
 
-		internal static async Task CacheUserInformationAsync( SteamId steamid, bool nameonly )
+		internal static async Task CacheUserInformationAsync( SteamId steamid, bool nameonly, CancellationToken cancellationToken = default )
 		{
 			// Got it straight away, skip any waiting.
 			if ( !RequestUserInformation( steamid, nameonly ) )
 				return;
 
-			await Task.Delay( 100 );
+			await Task.Delay( 100 , cancellationToken: cancellationToken );
 
 			while ( RequestUserInformation( steamid, nameonly ) )
 			{
-				await Task.Delay( 50 );
+				await Task.Delay( 50 , cancellationToken: cancellationToken );
 			}
 
 			//
 			// And extra wait here seems to solve avatars loading as [?]
 			//
-			await Task.Delay( 500 );
+			await Task.Delay( 500 , cancellationToken: cancellationToken );
 		}
 
 		/// <summary>
@@ -289,9 +290,9 @@ namespace Steamworks
 		/// </summary>
 		/// <param name="steamid">The <see cref="SteamId"/> of the user to get.</param>
 		/// <returns>A <see cref="Data.Image"/> with a value if the image was successfully retrieved.</returns>
-		public static async Task<Data.Image?> GetSmallAvatarAsync( SteamId steamid )
+		public static async Task<Data.Image?> GetSmallAvatarAsync( SteamId steamid, CancellationToken cancellationToken = default )
 		{
-			await CacheUserInformationAsync( steamid, false );
+			await CacheUserInformationAsync( steamid, false, cancellationToken );
 			return SteamUtils.GetImage( Internal.GetSmallFriendAvatar( steamid ) );
 		}
 
@@ -300,9 +301,9 @@ namespace Steamworks
 		/// </summary>
 		/// <param name="steamid">The <see cref="SteamId"/> of the user to get.</param>
 		/// <returns>A <see cref="Data.Image"/> with a value if the image was successfully retrieved.</returns>
-		public static async Task<Data.Image?> GetMediumAvatarAsync( SteamId steamid )
+		public static async Task<Data.Image?> GetMediumAvatarAsync( SteamId steamid, CancellationToken cancellationToken = default )
 		{
-			await CacheUserInformationAsync( steamid, false );
+			await CacheUserInformationAsync( steamid, false, cancellationToken );
 			return SteamUtils.GetImage( Internal.GetMediumFriendAvatar( steamid ) );
 		}
 
@@ -311,16 +312,16 @@ namespace Steamworks
 		/// </summary>
 		/// <param name="steamid">The <see cref="SteamId"/> of the user to get.</param>
 		/// <returns>A <see cref="Data.Image"/> with a value if the image was successfully retrieved.</returns>
-		public static async Task<Data.Image?> GetLargeAvatarAsync( SteamId steamid )
+		public static async Task<Data.Image?> GetLargeAvatarAsync( SteamId steamid, CancellationToken cancellationToken = default )
 		{
-			await CacheUserInformationAsync( steamid, false );
+			await CacheUserInformationAsync( steamid, false, cancellationToken );
 
 			var imageid = Internal.GetLargeFriendAvatar( steamid );
 
 			// Wait for the image to download
 			while ( imageid == -1 )
 			{
-				await Task.Delay( 50 );
+				await Task.Delay( 50, cancellationToken: cancellationToken );
 				imageid = Internal.GetLargeFriendAvatar( steamid );
 			}
 
