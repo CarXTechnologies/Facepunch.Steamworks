@@ -53,7 +53,7 @@ namespace Steamworks
 			AddInterface<SteamParties>();
 			AddInterface<SteamRemoteStorage>();
 			AddInterface<SteamScreenshots>();
-			//AddInterface<SteamUGC>();
+			AddInterface<SteamUGC>();
 			AddInterface<SteamUser>();
 			AddInterface<SteamUserStats>();
 			AddInterface<SteamUtils>();
