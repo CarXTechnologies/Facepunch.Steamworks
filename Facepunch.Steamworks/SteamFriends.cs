@@ -344,6 +344,11 @@ namespace Steamworks
 		/// </summary>
 		public static bool SetRichPresence( string key, string value )
 		{
+			if ( Internal == null)
+			{
+				return false;
+			}
+			
 			bool success = Internal.SetRichPresence( key, value );
 
 			if ( success ) 
@@ -358,7 +363,7 @@ namespace Steamworks
 		public static void ClearRichPresence()
 		{
 			richPresence.Clear();
-			Internal.ClearRichPresence();
+			Internal?.ClearRichPresence();
 		}
 
 		static bool _listenForFriendsMessages;
